@@ -10,11 +10,11 @@
 
     <form name="InstallMappingForm" novalidate>
         <div class="installation-group" ng-repeat="install in formData.Installations">
-        <ng-form name="structureField">
+        <ng-form name="InternalForm">
             {{install.Address}}, {{install.City}}, {{install.State}}
             <br>
-            <select ng-model="install.NestStructure" ng-options="structure.StructureName for structure in structures"></select>
-            <label class="error" ng-show="InstallMappingForm.structureField.$invalid">Nest structure selection required.</label>
+            <select ng-model="install.NestStructure" name="structureField" ng-options="structure.StructureName for structure in structures"></select>
+            <span ng-show="InternalForm.structureField.$error.required">Nest structure selection required.</span>
         </ng-form>
         </div>
         <button ng-click="submitAnswer()">Submit</button>
