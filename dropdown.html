@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="Dropdown" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-controller="DropdownCtrl">
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="dropdown.js"></script>
+
+    <form name="InstallMappingForm" novalidate>
+        <div class="installation-group" ng-repeat="install in formData.Installations">
+        <ng-form name="structureField">
+            {{install.Address}}, {{install.City}}, {{install.State}}
+            <br>
+            <select ng-model="install.NestStructure" ng-options="structure.StructureName for structure in structures"></select>
+            <label class="error" ng-show="InstallMappingForm.structureField.$invalid">Nest structure selection required.</label>
+        </ng-form>
+        </div>
+        <button ng-click="submitAnswer()">Submit</button>
+    </form>
+
+    <h3>Form Data:</h3>
+    <div ng-repeat="install in formData.Installations">
+        {{install.InstallationGuid | json}}
+        {{install | json}}
+    </div>
+
+    <h3>Nest Structures:</h3>
+    <div ng-repeat="structure in structures">
+        {{structure.StructureName | json}}
+    </div>
+
+    <h3>Submission:</h3>
+    <div ng-repeat="sub in submission">
+        {{sub | json}}
+    </div>
+
+    <!--{{formData.Installations.NestStructures}}-->
+
+</body>
+</html>
