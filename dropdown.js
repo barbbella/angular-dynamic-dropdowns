@@ -44,7 +44,8 @@ angular.module('Dropdown', [])
     $scope.formData = {};
     $scope.formData.Installations = data.Installations;
     $scope.formData.Installations.forEach(function(e) {
-      e.NestStructure = {StructureName: 'None', StructureID: null};
+      e.NestStructure = {StructureName: 'None Selected', StructureID: 0};
+      e.reqError = false;
     });
     $scope.structures = [];
     data.NestStructures.forEach(function(e) {
@@ -52,17 +53,53 @@ angular.module('Dropdown', [])
     });
     $scope.structures.push({StructureName: 'None', StructureID: null});
 
-    //$scope.selectedStructures = [];
+    // define error variables
+    $scope.uniqueError = false;
 
+    // submission
     $scope.submitAnswer = function() {
       $scope.submission = [];
-      $scope.formData.Installations.forEach(function(e) {
+
+      for (var i = 0; i<$scope.formData.Installations.length; i++) {
+        var e = $scope.formData.Installations[i];
         $scope.submission.push({
           InstallationGuid: e.InstallationGuid,
           StructureID: e.NestStructure.StructureID
         });
-      });
-      // TODO: Add Api post call
+
+        // form validation - must make one selection per installation
+        if (e.NestStructure.StructureID === 0) {
+          e.reqError = true;
+          return;
+        } else {
+          // remove error if item has been fixed
+          e.reqError = false;
+        }
+      }
+
+      if ($scope.duplicates()) {
+        $scope.uniqueError = true;
+        return;
+      }
+
+      // call Api
+      sendMapping();
+    };
+
+    // form validation - only one installation per Nest structure
+    $scope.duplicates = function() {
+      var duplicates = {};
+      for (var i = 0; i<$scope.submission.length; i++) {
+        if ($scope.submission[i].StructureID !== null && duplicates[$scope.submission[i].StructureID]) {
+          return true;
+        }
+        duplicates[$scope.submission[i].StructureID] = true;
+      }
+      return false;
+    };
+
+    function sendMapping() {
+      console.log('Sent to PowerGuide:', $scope.submission);
     }
 
 }]);

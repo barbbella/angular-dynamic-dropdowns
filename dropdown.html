@@ -10,31 +10,46 @@
 
     <form name="InstallMappingForm" novalidate>
         <div class="installation-group" ng-repeat="install in formData.Installations">
-        <ng-form name="InternalForm">
+        <!--<ng-form name="InternalForm">-->
             {{install.Address}}, {{install.City}}, {{install.State}}
             <br>
-            <select ng-model="install.NestStructure" name="structureField" ng-options="structure.StructureName for structure in structures"></select>
-            <span ng-show="InternalForm.structureField.$error.required">Nest structure selection required.</span>
-        </ng-form>
+            <select ng-model="install.NestStructure" required ng-options="structure.StructureName for structure in structures"></select>
+            <span ng-show="install.reqError">Nest structure selection required.</span>
+        <!--</ng-form>-->
         </div>
+        </div>
+        <span ng-show="uniqueError">Please select only one Nest structure per Solar installation.</span>
         <button ng-click="submitAnswer()">Submit</button>
+
+
+        <!--<h3>Form Validation:</h3>-->
+        <!--<div>-->
+            <!--Entire Form: {{InstallMappingForm}}-->
+            <!--<br>-->
+            <!--Entire Form Errors: {{InstallMappingForm.$error}}-->
+            <!--<br>-->
+
+        <!--</div>-->
+
     </form>
 
-    <h3>Form Data:</h3>
-    <div ng-repeat="install in formData.Installations">
-        {{install.InstallationGuid | json}}
-        {{install | json}}
-    </div>
 
-    <h3>Nest Structures:</h3>
-    <div ng-repeat="structure in structures">
-        {{structure.StructureName | json}}
-    </div>
 
-    <h3>Submission:</h3>
-    <div ng-repeat="sub in submission">
-        {{sub | json}}
-    </div>
+    <!--<h3>Form Data:</h3>-->
+    <!--<div ng-repeat="install in formData.Installations">-->
+        <!--{{install.InstallationGuid | json}}-->
+        <!--{{install | json}}-->
+    <!--</div>-->
+<!--∑-->
+    <!--<h3>Nest Structures:</h3>-->
+    <!--<div ng-repeat="structure in structures">-->
+        <!--{{structure.StructureName | json}}-->
+    <!--</div>-->
+
+    <!--<h3>Submission:</h3>-->
+    <!--<div ng-repeat="sub in submission">-->
+        <!--{{sub | json}}-->
+    <!--</div>-->
 
     <!--{{formData.Installations.NestStructures}}-->
 
